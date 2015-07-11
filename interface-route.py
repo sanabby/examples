@@ -13,32 +13,24 @@ def interface_add_route(client, uuid, subnet):
         logging.error('Interface not found')
         sys.exit(1)
 
-    refs = vmi.get_instance_ip_back_refs()
-    if refs is None:
-        logging.error('No primary IP address for interface')
-        sys.exit(1)
-
-    ip = client.instance_ip_read(id=refs[0]['uuid'])
-    
-    table = vmi.get_virtual_machine_interface_host_routes()
-    if table is None:
-        table = opencontrail.RouteTableType()
-    else:
-        for route in table.route:
-            if route.prefix == subnet:
-                logging.error('Duplicate prefix')
-                sys.exit(1)
-
-    table.add_route(opencontrail.RouteType(subnet, ip.instance_ip_address, None))
-    vmi.set_virtual_machine_interface_host_routes(table)
-    client.virtual_machine_interface_update(vmi)
+    try:
+        table = client.interface_route_table_read(name=uuid)
+    except opencontrail.NoIdError:
+        logging.debug('Create route-table')
+        table = opencontrail.InterfaceRouteTable()
+        routes = opencontrail.RouteTableType()
+        routes.add_route(opencontrail.RouteType(subnet, None, None))
+        table.set_interface_route_table_routes(routes)
+        client.interface_route_table_create(table)
+        vmi.add_interface_route_table(table)
+        client.virtual_machine_interface_update(vmi)        
 
 def interface_del_route(client, uuid):
     try:
         vmi = client.virtual_machine_interface_read(id=uuid)
     except opencontrail.NoIdError:
         sys.exit(0)
-    vmi.set_virtual_machine_interface_host_routes(None)
+    vmi.set_interface_route_table_list(None)
     client.virtual_machine_interface_update(vmi)
 
 def main():
@@ -80,4 +72,7 @@ def main():
         sys.exit(1)
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as ex:
+        logging.error(ex)
