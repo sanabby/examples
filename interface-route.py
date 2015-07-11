@@ -14,10 +14,10 @@ def interface_add_route(client, uuid, subnet):
         sys.exit(1)
 
     try:
-        table = client.interface_route_table_read(name=uuid)
+        table = client.interface_route_table_read(fq_name=uuid)
     except opencontrail.NoIdError:
         logging.debug('Create route-table')
-        table = opencontrail.InterfaceRouteTable()
+        table = opencontrail.InterfaceRouteTable(name=uuid)
         routes = opencontrail.RouteTableType()
         routes.add_route(opencontrail.RouteType(subnet, None, None))
         table.set_interface_route_table_routes(routes)
