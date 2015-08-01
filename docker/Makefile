@@ -1,0 +1,12 @@
+#
+#
+#
+
+PREFIX=opencontrail
+TAG=2.20
+
+all: build-config build-control build-ifmap-server
+
+build-%:
+	$(eval SUBDIR := $(patsubst build-%,%,$@))
+	docker build -t ${PREFIX}/${SUBDIR}:${TAG} ${SUBDIR}

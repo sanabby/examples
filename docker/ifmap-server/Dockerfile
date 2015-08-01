@@ -1,0 +1,7 @@
+FROM java:7
+MAINTAINER Pedro Marques <roque@juniper.net>
+RUN apt-get update
+RUN apt-get install -y libcommons-codec-java libhttpcore-java liblog4j1.2-java
+COPY ifmap-server_0.3.2-1contrail1_all.deb /var/cache/apt/archives/
+RUN dpkg --unpack /var/cache/apt/archives/ifmap-server_0.3.2-1contrail1_all.deb
+ENTRYPOINT ["/usr/bin/ifmap-server"]
