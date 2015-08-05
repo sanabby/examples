@@ -7,6 +7,7 @@ RUN yum install -y libtool kernel-devel
 RUN yum install -y bzip2 boost-devel tbb-devel libcurl-devel libxml2-devel zlib-devel
 RUN yum install -y epel-release
 RUN yum install -y scons protobuf protobuf-devel protobuf-compiler
+RUN yum install -y python-sphinx
 RUN repo init -u https://github.com/Juniper/contrail-vnc.git -m noauth.xml
 RUN repo sync third_party
 RUN USER=nobody python third_party/fetch_packages.py
