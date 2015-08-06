@@ -19,3 +19,6 @@ RUN rm -rf /tmp/utils.py*
 # TMP Apply ifmap client.py patch https://review.opencontrail.org/#/c/12816/2
 RUN sed -i 's/ : PROTOCOL_SSLv23/ : PROTOCOL_TLSv1/' /usr/lib/python2.7/dist-packages/cfgm_common/ifmap/client.py
 RUN sed -i 's/sys.version_info/False and sys.version_info/' /usr/lib/python2.7/dist-packages/cfgm_common/ifmap/client.py
+
+# Fix discovery server startup issue
+RUN sed -i 's/defaults.update/#defaults.update/' /usr/lib/python2.7/dist-packages/discovery/disc_server.py

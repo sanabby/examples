@@ -5,7 +5,7 @@
 PREFIX=opencontrail
 TAG=2.20
 
-all: build-config build-control build-ifmap-server
+all: build-config build-control build-ifmap-server build-analytics
 
 build-%:
 	$(eval SUBDIR := $(patsubst build-%,%,$@))
