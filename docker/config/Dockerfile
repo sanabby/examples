@@ -20,5 +20,8 @@ RUN rm -rf /tmp/utils.py*
 RUN sed -i 's/ : PROTOCOL_SSLv23/ : PROTOCOL_TLSv1/' /usr/lib/python2.7/dist-packages/cfgm_common/ifmap/client.py
 RUN sed -i 's/sys.version_info/False and sys.version_info/' /usr/lib/python2.7/dist-packages/cfgm_common/ifmap/client.py
 
-# Fix discovery server startup issue
-RUN sed -i 's/defaults.update/#defaults.update/' /usr/lib/python2.7/dist-packages/discovery/disc_server.py
+# TMP Fix discovery server startup issue
+RUN sed -i 's/\(.*update.*DEFAULTS.*\)/#\ \1/' /usr/lib/python2.7/dist-packages/discovery/disc_server.py
+
+# TMP Fix to api server command line options
+RUN sed -i 's/# TODO should be from certificate/parser.add_argument("--disc_server_ip", help="IP address of discovery server")/' /usr/lib/python2.7/dist-packages/vnc_cfg_api_server/utils.py
