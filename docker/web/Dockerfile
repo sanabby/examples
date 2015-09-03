@@ -22,3 +22,8 @@ RUN ln -sf /var/lib/contrail-webui /usr/src/contrail
 RUN mv /etc/contrail/config.global.js.dpkg-new /etc/contrail/config.global.js
 RUN sed -i "s/config.orchestration.Manager = 'openstack'/config.orchestration.Manager = 'none'/" /etc/contrail/config.global.js
 RUN sed -i 's/8080/8070/' /etc/contrail/config.global.js
+
+RUN echo "#!/usr/bin/env bash" > /usr/bin/contrail-webui-start.sh
+RUN echo cd /var/lib/contrail-webui/contrail-web-core >> /usr/bin/contrail-webui-start.sh
+RUN echo exec /usr/bin/node webServerStart.js >> /usr/bin/contrail-webui-start.sh
+RUN chmod +x /usr/bin/contrail-webui-start.sh
