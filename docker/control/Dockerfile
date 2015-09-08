@@ -8,4 +8,3 @@ RUN apt-get install -y $(apt-cache depends contrail-control | egrep -v "supervis
 RUN dpkg --unpack contrail-control*.deb
 RUN rm -f /var/lib/dpkg/info/contrail-control.postinst
 ENTRYPOINT ["/usr/bin/contrail-control"]
-

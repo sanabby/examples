@@ -8,6 +8,3 @@ RUN apt-get download contrail-analytics
 RUN apt-get install -y $(apt-cache depends contrail-analytics | egrep -v "supervisor|<.*>" | grep Depends | sed "s/.*ends:\ //" | tr '\n' ' ')
 RUN dpkg --unpack contrail-analytics*.deb
 RUN rm -f /var/lib/dpkg/info/contrail-analytics.postinst
-
-# TMP Fix op server startup issue
-RUN sed -i 's/\(.*update.*DEFAULTS.*\)/#\ \1/' /usr/lib/python2.7/dist-packages/opserver/opserver.py
